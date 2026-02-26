@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="280" rx="12" fill="url(#bg4)"/>
+
+  <text x="450" y="32" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16" font-weight="600" fill="#94a3b8" text-anchor="middle">Setup Flow</text>
+
+  <!-- Step 1 -->
+  <rect x="30" y="55" width="155" height="140" rx="10" fill="#020617" stroke="#38bdf8" stroke-width="1.5"/>
+  <circle cx="108" cy="78" r="14" fill="#38bdf8" opacity="0.15"/>
+  <text x="108" y="83" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="middle">1</text>
+  <text x="108" y="108" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">3CX Admin</text>
+  <text x="108" y="128" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Integrations</text>
+  <text x="108" y="144" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">  &gt; API  &gt; + Add</text>
+  <text x="108" y="172" font-family="ui-sans-serif,system-ui,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Log in as System Owner</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="185" y1="125" x2="218" y2="125" stroke="#334155" stroke-width="1.5"/>
+  <polygon points="215,120 228,125 215,130" fill="#475569"/>
+
+  <!-- Step 2 -->
+  <rect x="228" y="55" width="155" height="140" rx="10" fill="#020617" stroke="#818cf8" stroke-width="1.5"/>
+  <circle cx="306" cy="78" r="14" fill="#818cf8" opacity="0.15"/>
+  <text x="306" y="83" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" font-weight="700" fill="#818cf8" text-anchor="middle">2</text>
+  <text x="306" y="108" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Configure</text>
+  <text x="306" y="130" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Client ID + Role</text>
+  <rect x="248" y="140" width="116" height="18" rx="4" fill="#38bdf8" opacity="0.1"/>
+  <text x="306" y="153" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#38bdf8" text-anchor="middle">Call Control  [x]</text>
+  <rect x="248" y="162" width="116" height="18" rx="4" fill="#818cf8" opacity="0.1"/>
+  <text x="306" y="175" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#818cf8" text-anchor="middle">XAPI          [x]</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="383" y1="125" x2="416" y2="125" stroke="#334155" stroke-width="1.5"/>
+  <polygon points="413,120 426,125 413,130" fill="#475569"/>
+
+  <!-- Step 3 -->
+  <rect x="426" y="55" width="155" height="140" rx="10" fill="#020617" stroke="#fbbf24" stroke-width="1.5"/>
+  <circle cx="504" cy="78" r="14" fill="#fbbf24" opacity="0.15"/>
+  <text x="504" y="83" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="middle">3</text>
+  <text x="504" y="108" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Save &amp; Copy</text>
+  <text x="504" y="130" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">API key shown once!</text>
+
+  <!-- Key icon -->
+  <g transform="translate(477, 142)">
+    <circle cx="10" cy="10" r="7" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="17" y1="10" x2="40" y2="10" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="35" y1="10" x2="35" y2="16" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="30" y1="10" x2="30" y2="14" stroke="#fbbf24" stroke-width="1.5"/>
+  </g>
+
+  <text x="504" y="178" font-family="ui-sans-serif,system-ui,sans-serif" font-size="10" fill="#f87171" text-anchor="middle">Cannot be retrieved later</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="581" y1="125" x2="614" y2="125" stroke="#334155" stroke-width="1.5"/>
+  <polygon points="611,120 624,125 611,130" fill="#475569"/>
+
+  <!-- Step 4 -->
+  <rect x="624" y="55" width="245" height="140" rx="10" fill="#020617" stroke="#22c55e" stroke-width="1.5"/>
+  <circle cx="702" cy="78" r="14" fill="#22c55e" opacity="0.15"/>
+  <text x="702" y="83" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" font-weight="700" fill="#22c55e" text-anchor="middle">4</text>
+  <text x="746" y="108" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Configure CLI</text>
+
+  <!-- Terminal mini -->
+  <rect x="640" y="118" width="214" height="64" rx="5" fill="#020617" stroke="#334155" stroke-width="0.8"/>
+  <text x="650" y="136" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#64748b">$</text>
+  <text x="660" y="136" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#38bdf8">3cx-call config \</text>
+  <text x="660" y="150" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#94a3b8">  --fqdn pbx.example.com ...</text>
+  <text x="650" y="166" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#64748b">$</text>
+  <text x="660" y="166" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#818cf8">3cx-config config \</text>
+  <text x="660" y="178" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="9" fill="#94a3b8">  --fqdn pbx.example.com ...</text>
+
+  <!-- Bottom: quick-start summary -->
+  <rect x="30" y="215" width="839" height="50" rx="8" fill="#22c55e" opacity="0.05" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="450" y="237" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" font-weight="600" fill="#22c55e" text-anchor="middle">Verify</text>
+  <text x="450" y="255" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="12" fill="#94a3b8" text-anchor="middle">./3cx-call status          ./3cx-config version</text>
+</svg>

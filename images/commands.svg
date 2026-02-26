@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="520" rx="12" fill="url(#bg3)"/>
+
+  <text x="450" y="35" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16" font-weight="600" fill="#94a3b8" text-anchor="middle">Command Map</text>
+
+  <!-- ══ 3cx-call column ══ -->
+  <text x="170" y="68" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="16" font-weight="700" fill="#38bdf8" text-anchor="middle">3cx-call</text>
+  <text x="170" y="86" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#475569" text-anchor="middle">8 commands</text>
+
+  <!-- Call Control category -->
+  <rect x="30" y="100" width="280" height="190" rx="8" fill="#38bdf8" opacity="0.04" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="50" y="122" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" font-weight="600" fill="#38bdf8">Call Operations</text>
+
+  <!-- Command items -->
+  <g font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="12">
+    <text x="50" y="146" fill="#e2e8f0">status</text>
+    <text x="130" y="146" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">call control status</text>
+    <text x="50" y="168" fill="#e2e8f0">call</text>
+    <text x="130" y="168" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">make outbound call</text>
+    <text x="50" y="190" fill="#e2e8f0">devices</text>
+    <text x="130" y="190" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">list/get devices</text>
+    <text x="50" y="212" fill="#e2e8f0">participant</text>
+    <text x="155" y="212" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">get participants</text>
+    <text x="50" y="234" fill="#e2e8f0">action</text>
+    <text x="130" y="234" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">answer/drop/transfer</text>
+    <text x="50" y="256" fill="#e2e8f0">listen</text>
+    <text x="130" y="256" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">WebSocket events</text>
+    <text x="50" y="278" fill="#e2e8f0">stream</text>
+    <text x="130" y="278" fill="#475569" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">audio get/upload</text>
+  </g>
+
+  <!-- Features box -->
+  <rect x="30" y="305" width="280" height="90" rx="8" fill="#334155" opacity="0.2"/>
+  <text x="50" y="328" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" font-weight="600" fill="#64748b">Features</text>
+  <circle cx="52" cy="348" r="3" fill="#22c55e"/>
+  <text x="62" y="352" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#94a3b8">--verbose / -v  debug mode</text>
+  <circle cx="52" cy="370" r="3" fill="#22c55e"/>
+  <text x="62" y="374" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#94a3b8">WebSocket auto-reconnect</text>
+  <circle cx="52" cy="392" r="3" fill="#22c55e"/>
+  <text x="62" y="396" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#94a3b8">Unified error handling</text>
+
+  <!-- Divider line -->
+  <line x1="345" y1="65" x2="345" y2="500" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ══ 3cx-config column ══ -->
+  <text x="620" y="68" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="16" font-weight="700" fill="#818cf8" text-anchor="middle">3cx-config</text>
+  <text x="620" y="86" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#475569" text-anchor="middle">31 commands across 8 categories</text>
+
+  <!-- Grid of categories -->
+  <!-- Row 1 -->
+  <!-- Setup -->
+  <rect x="375" y="100" width="160" height="74" rx="6" fill="#818cf8" opacity="0.04" stroke="#818cf8" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="390" y="118" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#818cf8">Setup</text>
+  <text x="390" y="136" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">config  token  version</text>
+  <text x="390" y="154" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">system-status</text>
+
+  <!-- Users & Depts -->
+  <rect x="545" y="100" width="320" height="74" rx="6" fill="#818cf8" opacity="0.04" stroke="#818cf8" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="560" y="118" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#818cf8">Users &amp; Departments</text>
+  <text x="560" y="136" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">users  create-user  delete-users</text>
+  <text x="560" y="154" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">departments  create-department  assign-role</text>
+
+  <!-- Row 2 -->
+  <!-- Communication -->
+  <rect x="375" y="184" width="160" height="74" rx="6" fill="#34d399" opacity="0.04" stroke="#34d399" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="390" y="202" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#34d399">Communication</text>
+  <text x="390" y="220" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">live-chat</text>
+  <text x="390" y="238" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">create-live-chat  parking</text>
+
+  <!-- System Operations -->
+  <rect x="545" y="184" width="320" height="74" rx="6" fill="#34d399" opacity="0.04" stroke="#34d399" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="560" y="202" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#34d399">System Operations</text>
+  <text x="560" y="220" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">active-calls  call-history</text>
+  <text x="560" y="238" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">recordings</text>
+
+  <!-- Row 3 -->
+  <!-- Routing -->
+  <rect x="375" y="268" width="250" height="74" rx="6" fill="#fbbf24" opacity="0.04" stroke="#fbbf24" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="390" y="286" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#fbbf24">Routing &amp; Call Flow</text>
+  <text x="390" y="304" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">inbound-rules  outbound-rules</text>
+  <text x="390" y="322" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">ivrs  queues  ring-groups</text>
+
+  <!-- Infrastructure -->
+  <rect x="635" y="268" width="230" height="74" rx="6" fill="#fbbf24" opacity="0.04" stroke="#fbbf24" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="650" y="286" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#fbbf24">Infrastructure</text>
+  <text x="650" y="304" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">trunks  phones</text>
+  <text x="650" y="322" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">contacts</text>
+
+  <!-- Row 4 -->
+  <!-- Security -->
+  <rect x="375" y="352" width="250" height="74" rx="6" fill="#f87171" opacity="0.04" stroke="#f87171" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="390" y="370" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#f87171">Security</text>
+  <text x="390" y="388" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">blacklist  ip-blocklist</text>
+  <text x="390" y="406" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">activity-log</text>
+
+  <!-- System Control -->
+  <rect x="635" y="352" width="230" height="74" rx="6" fill="#f87171" opacity="0.04" stroke="#f87171" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="650" y="370" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#f87171">System Control</text>
+  <text x="650" y="388" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">backups  restart</text>
+  <text x="650" y="406" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" font-size="10" fill="#94a3b8">emergency-numbers</text>
+
+  <!-- Features box -->
+  <rect x="375" y="440" width="490" height="65" rx="8" fill="#334155" opacity="0.2"/>
+  <text x="395" y="462" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" font-weight="600" fill="#64748b">Shared Features</text>
+  <circle cx="397" cy="484" r="3" fill="#22c55e"/>
+  <text x="407" y="488" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#94a3b8">Token caching (60 min)</text>
+  <circle cx="560" cy="484" r="3" fill="#22c55e"/>
+  <text x="570" y="488" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#94a3b8">OData pagination &amp; filtering</text>
+  <circle cx="760" cy="484" r="3" fill="#22c55e"/>
+  <text x="770" y="488" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#94a3b8">Safe JSON handling</text>
+</svg>
