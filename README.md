@@ -354,8 +354,9 @@ Use `--reason` with these values:
 ./3cx-config active-calls --top 10
 ./3cx-config active-calls --drop 42
 
-# Call history
+# Call history (default: last 7 days)
 ./3cx-config call-history --top 50
+./3cx-config call-history --start "2026-01-01T00:00:00Z" --end "2026-01-31T23:59:59Z"
 ./3cx-config call-history --filter "StartTime gt 2024-01-01"
 
 # Recordings
@@ -425,6 +426,10 @@ Use `--reason` with these values:
 
 # Activity log
 ./3cx-config activity-log
+./3cx-config activity-log --start "2026-02-01T00:00:00Z" --end "2026-02-28T23:59:59Z"
+./3cx-config activity-log --extension "100"
+./3cx-config activity-log --call-id "abc123"
+./3cx-config activity-log --severity "Error"
 ./3cx-config activity-log --purge
 ```
 
@@ -434,7 +439,7 @@ Use `--reason` with these values:
 # Backups
 ./3cx-config backups
 ./3cx-config backups --create
-./3cx-config backups --restore 3
+./3cx-config backups --restore "backup_2026-02-27.zip"
 
 # Restart (requires --confirm flag as a safety measure)
 ./3cx-config restart --confirm
@@ -470,6 +475,18 @@ Most list commands in `3cx-config` support OData-style pagination and filtering 
 ```
 
 These flags work with: `users`, `departments`, `live-chat`, `parking`, `active-calls`, `call-history`, `recordings`, `inbound-rules`, `outbound-rules`, `ivrs`, `queues`, `ring-groups`, `trunks`, `phones`, `contacts`, `blacklist`, `ip-blocklist`, `activity-log`, `backups`, and `emergency-numbers`.
+
+### API Endpoint Mapping
+
+Some CLI command names differ from their underlying 3CX API endpoint names. This table maps them for developers using the API directly:
+
+| CLI Command | API Endpoint | Notes |
+|-------------|-------------|-------|
+| `phones` | `SipDevices` | Hardware/softphone devices |
+| `ivrs` | `CallFlowApps` | IVR / Auto-attendant menus |
+| `emergency-numbers` | `EmergencyGeoLocations` | E911 / emergency routing |
+| `call-history` | `ReportCallLogData/Pbx.GetCallLogData(...)` | OData function with date params |
+| `activity-log` | `ActivityLog/Pbx.GetLogs(...)` | OData function with filter params |
 
 #### User Roles
 
