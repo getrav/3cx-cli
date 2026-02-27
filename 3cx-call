@@ -23,8 +23,28 @@ def save_config(config):
         json.dump(config, f, indent=2)
     os.chmod(CONFIG_FILE, 0o600)
 
+def get_token(config):
+    """Exchange API key for JWT via OAuth2 token endpoint."""
+    now = time.time()
+    if config.get("access_token") and config.get("token_expiry", 0) > now + 5:
+        return config["access_token"]
+    url = f"https://{config['fqdn']}/connect/token"
+    data = {
+        "client_id": config["dn"],
+        "client_secret": config["api_key"],
+        "grant_type": "client_credentials"
+    }
+    resp = requests.post(url, data=data)
+    resp.raise_for_status()
+    token_data = resp.json()
+    config["access_token"] = token_data["access_token"]
+    config["token_expiry"] = now + token_data.get("expires_in", 60)
+    save_config(config)
+    return config["access_token"]
+
 def get_headers(config):
-    return {"Authorization": f"Bearer {config['api_key']}", "Content-Type": "application/json"}
+    token = get_token(config)
+    return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
 def api_url(config, path=""):
     base = f"https://{config['fqdn']}/callcontrol"
@@ -176,7 +196,7 @@ def cmd_listen(args):
 
         ws = websocket.WebSocketApp(
             ws_url_str,
-            header=[f"Authorization: Bearer {config['api_key']}"],
+            header=[f"Authorization: Bearer {get_token(config)}"],
             on_message=on_message,
             on_error=on_error,
             on_open=on_open,

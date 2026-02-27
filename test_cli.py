@@ -153,7 +153,7 @@ class TestConfigTokenCaching(unittest.TestCase):
             "client_id": "id",
             "client_secret": "secret",
             "access_token": "old_tok",
-            "token_expiry": 1050.0,  # within 60s buffer
+            "token_expiry": 1003.0,  # within 5s safety margin
         }
         headers = cx_config.get_headers(config)
         self.assertEqual(headers["Authorization"], "Bearer new_tok")
@@ -227,7 +227,8 @@ class TestConfigAllSubcommandsParse(unittest.TestCase):
                                            return_value={"Authorization": "Bearer t"}), \
                          mock.patch.object(cx_config, "get_token",
                                            return_value={"access_token": "t", "expires_in": 3600}), \
-                         mock.patch("requests.get", return_value=make_response(200)), \
+                         mock.patch("requests.get", return_value=make_response(
+                         200, body={"value": [], "Version": "20", "FQDN": "x"})), \
                          mock.patch("requests.post", return_value=make_response(200)), \
                          mock.patch("requests.patch", return_value=make_response(200)), \
                          mock.patch("requests.delete", return_value=make_response(200)), \
@@ -306,7 +307,7 @@ class TestConfigBugFixes(unittest.TestCase):
         args = types.SimpleNamespace(ids=[1, 2])
         cx_config.cmd_delete_users(args)
         url_called = mock_post.call_args[0][0]
-        self.assertIn("Pbx.BulkUsersDelete", url_called)
+        self.assertIn("Pbx.BatchDelete", url_called)
 
     @mock.patch.object(cx_config, "handle_response")
     @mock.patch("requests.post")
@@ -481,6 +482,76 @@ class TestCallListenRetries(unittest.TestCase):
         p = sub.add_parser("listen")
         p.add_argument("--retries", type=int, default=5)
         self.assertEqual(parser.parse_args(["listen", "--retries", "10"]).retries, 10)
+
+
+class TestCallGetToken(unittest.TestCase):
+    """Tests for cx_call.get_token() OAuth2 client credentials flow."""
+
+    @mock.patch.object(cx_call, "save_config")
+    @mock.patch("requests.post")
+    def test_get_token_posts_correct_payload(self, mock_post, mock_save):
+        mock_post.return_value = make_response(200, body={
+            "access_token": "jwt_token_abc",
+            "expires_in": 3600,
+        })
+        config = {"fqdn": "pbx.example.com", "api_key": "secret123", "dn": "100"}
+        token = cx_call.get_token(config)
+        self.assertEqual(token, "jwt_token_abc")
+        mock_post.assert_called_once()
+        call_args = mock_post.call_args
+        self.assertEqual(call_args[0][0], "https://pbx.example.com/connect/token")
+        self.assertEqual(call_args[1]["data"]["client_id"], "100")
+        self.assertEqual(call_args[1]["data"]["client_secret"], "secret123")
+        self.assertEqual(call_args[1]["data"]["grant_type"], "client_credentials")
+
+    @mock.patch.object(cx_call, "save_config")
+    @mock.patch("requests.post")
+    @mock.patch("time.time", return_value=1000.0)
+    def test_get_token_uses_cached_when_valid(self, mock_time, mock_post, mock_save):
+        config = {
+            "fqdn": "pbx.example.com",
+            "api_key": "secret123",
+            "dn": "100",
+            "access_token": "cached_jwt",
+            "token_expiry": 2000.0,
+        }
+        token = cx_call.get_token(config)
+        self.assertEqual(token, "cached_jwt")
+        mock_post.assert_not_called()
+
+    @mock.patch.object(cx_call, "save_config")
+    @mock.patch("requests.post")
+    @mock.patch("time.time", return_value=1000.0)
+    def test_get_token_refreshes_when_expired(self, mock_time, mock_post, mock_save):
+        mock_post.return_value = make_response(200, body={
+            "access_token": "fresh_jwt",
+            "expires_in": 3600,
+        })
+        config = {
+            "fqdn": "pbx.example.com",
+            "api_key": "secret123",
+            "dn": "100",
+            "access_token": "stale_jwt",
+            "token_expiry": 1003.0,  # within 5s safety margin
+        }
+        token = cx_call.get_token(config)
+        self.assertEqual(token, "fresh_jwt")
+        mock_post.assert_called_once()
+        mock_save.assert_called_once()
+        self.assertEqual(config["access_token"], "fresh_jwt")
+        self.assertEqual(config["token_expiry"], 4600.0)
+
+
+class TestCallGetHeaders(unittest.TestCase):
+    """Tests for cx_call.get_headers() using get_token internally."""
+
+    @mock.patch.object(cx_call, "get_token", return_value="my_bearer_token")
+    def test_get_headers_returns_bearer_and_content_type(self, mock_get_token):
+        config = {"fqdn": "pbx.example.com", "api_key": "k", "dn": "100"}
+        headers = cx_call.get_headers(config)
+        mock_get_token.assert_called_once_with(config)
+        self.assertEqual(headers["Authorization"], "Bearer my_bearer_token")
+        self.assertEqual(headers["Content-Type"], "application/json")
 
 
 if __name__ == "__main__":

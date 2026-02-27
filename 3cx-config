@@ -35,7 +35,7 @@ def get_token(fqdn, client_id, client_secret):
 
 def get_headers(config):
     now = time.time()
-    if config.get("access_token") and config.get("token_expiry", 0) > now + 60:
+    if config.get("access_token") and config.get("token_expiry", 0) > now + 5:
         token = config["access_token"]
     else:
         token_data = get_token(config["fqdn"], config["client_id"], config["client_secret"])
@@ -165,7 +165,7 @@ def cmd_create_user(args):
 def cmd_delete_users(args):
     config = load_config()
     headers = get_headers(config)
-    resp = requests.post(api_url(config, "Users/Pbx.BulkUsersDelete"), headers=headers, json={"Ids": args.ids})
+    resp = requests.post(api_url(config, "Users/Pbx.BatchDelete"), headers=headers, json={"ids": args.ids})
     handle_response(resp)
 
 def cmd_assign_role(args):
@@ -222,15 +222,19 @@ def cmd_parking(args):
 def cmd_version(args):
     config = load_config()
     headers = get_headers(config)
-    resp = requests.get(api_url(config, "Pbx.GetVersion"), headers=headers)
-    handle_response(resp)
+    resp = requests.get(api_url(config, "SystemStatus"), headers=headers)
+    data = resp.json()
+    if resp.status_code < 400:
+        print(json.dumps({"Version": data.get("Version"), "FQDN": data.get("FQDN")}, indent=2))
+    else:
+        handle_response(resp)
 
 # ── Tier 1 – System Operations ────────────────────────────────────────────────
 
 def cmd_system_status(args):
     config = load_config()
     headers = get_headers(config)
-    resp = requests.get(api_url(config, "Pbx.SystemStatus()"), headers=headers)
+    resp = requests.get(api_url(config, "SystemStatus"), headers=headers)
     handle_response(resp)
 
 def cmd_active_calls(args):
@@ -247,7 +251,7 @@ def cmd_recordings(args):
     config = load_config()
     headers = get_headers(config)
     if args.download:
-        resp = requests.get(api_url(config, f"Recordings({args.download})/Pbx.Download"), headers=headers)
+        resp = requests.get(api_url(config, f"Recordings/Pbx.DownloadRecording(recId={args.download})"), headers=headers)
         if resp.status_code >= 400:
             print(f"Error {resp.status_code}: {resp.text}", file=sys.stderr)
             sys.exit(1)
@@ -256,7 +260,7 @@ def cmd_recordings(args):
             f.write(resp.content)
         print(f"Saved to {fname}")
     elif args.delete:
-        resp = requests.post(api_url(config, "Recordings/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "Recordings/Pbx.BulkRecordingsDelete"), headers=headers, json={"Ids": args.delete})
         handle_response(resp)
     else:
         params = build_list_params(args)
@@ -267,7 +271,25 @@ def cmd_call_history(args):
     config = load_config()
     headers = get_headers(config)
     params = build_list_params(args)
-    resp = requests.get(api_url(config, "CallHistoryView"), headers=headers, params=params)
+    params.pop("$orderby", None)
+    from datetime import datetime, timedelta, timezone
+    now = datetime.now(timezone.utc)
+    default_start = (now - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    default_end = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    start = args.start or default_start
+    end = args.end or default_end
+    path = (
+        f"ReportCallLogData/Pbx.GetCallLogData("
+        f"periodFrom={start},"
+        f"periodTo={end},"
+        f"sourceType=0,sourceFilter='',"
+        f"destinationType=0,destinationFilter='',"
+        f"callsType=0,"
+        f"callTimeFilterType=0,"
+        f"callTimeFilterFrom='00:00',callTimeFilterTo='23:59',"
+        f"hidePcalls=true)"
+    )
+    resp = requests.get(api_url(config, path), headers=headers, params=params)
     handle_response(resp)
 
 # ── Tier 2 – Routing & Call Flow ──────────────────────────────────────────────
@@ -276,7 +298,7 @@ def cmd_inbound_rules(args):
     config = load_config()
     headers = get_headers(config)
     if args.delete:
-        resp = requests.post(api_url(config, "InboundRules/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "InboundRules/Pbx.BulkInboundRulesDelete"), headers=headers, json={"Ids": args.delete})
     elif args.id:
         resp = requests.get(api_url(config, f"InboundRules({args.id})"), headers=headers)
     else:
@@ -288,7 +310,7 @@ def cmd_outbound_rules(args):
     config = load_config()
     headers = get_headers(config)
     if args.delete:
-        resp = requests.post(api_url(config, "OutboundRules/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "OutboundRules/Pbx.BulkNumbersDelete"), headers=headers, json={"Ids": args.delete})
     elif args.id:
         resp = requests.get(api_url(config, f"OutboundRules({args.id})"), headers=headers)
     else:
@@ -300,10 +322,10 @@ def cmd_ivrs(args):
     config = load_config()
     headers = get_headers(config)
     if args.id:
-        resp = requests.get(api_url(config, f"IVRs({args.id})"), headers=headers)
+        resp = requests.get(api_url(config, f"CallFlowApps({args.id})"), headers=headers)
     else:
         params = build_list_params(args)
-        resp = requests.get(api_url(config, "IVRs"), headers=headers, params=params)
+        resp = requests.get(api_url(config, "CallFlowApps"), headers=headers, params=params)
     handle_response(resp)
 
 def cmd_queues(args):
@@ -332,7 +354,7 @@ def cmd_trunks(args):
     config = load_config()
     headers = get_headers(config)
     if args.delete:
-        resp = requests.post(api_url(config, "Trunks/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "Trunks/Pbx.BulkNumbersDelete"), headers=headers, json={"Ids": args.delete})
     elif args.id:
         resp = requests.get(api_url(config, f"Trunks({args.id})"), headers=headers)
     else:
@@ -344,12 +366,12 @@ def cmd_phones(args):
     config = load_config()
     headers = get_headers(config)
     if args.delete:
-        resp = requests.post(api_url(config, "Phones/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "SipDevices/Pbx.BulkNumbersDelete"), headers=headers, json={"Ids": args.delete})
     elif args.id:
-        resp = requests.get(api_url(config, f"Phones({args.id})"), headers=headers)
+        resp = requests.get(api_url(config, f"SipDevices({args.id})"), headers=headers)
     else:
         params = build_list_params(args)
-        resp = requests.get(api_url(config, "Phones"), headers=headers, params=params)
+        resp = requests.get(api_url(config, "SipDevices"), headers=headers, params=params)
     handle_response(resp)
 
 def cmd_contacts(args):
@@ -365,7 +387,7 @@ def cmd_contacts(args):
             f.write(resp.content)
         print(f"Exported to {fname}")
     elif args.delete:
-        resp = requests.post(api_url(config, "Contacts/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "Contacts/Pbx.BulkNumbersDelete"), headers=headers, json={"Ids": args.delete})
         handle_response(resp)
     elif args.id:
         resp = requests.get(api_url(config, f"Contacts({args.id})"), headers=headers)
@@ -384,7 +406,7 @@ def cmd_blacklist(args):
         resp = requests.post(api_url(config, "BlackListNumbers"), headers=headers, json={"Number": args.add, "Id": 0})
         handle_response(resp)
     elif args.delete:
-        resp = requests.post(api_url(config, "BlackListNumbers/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "BlackListNumbers/Pbx.BulkNumbersDelete"), headers=headers, json={"Ids": args.delete})
         handle_response(resp)
     else:
         params = build_list_params(args)
@@ -398,7 +420,7 @@ def cmd_ip_blocklist(args):
         resp = requests.post(api_url(config, "Blocklist"), headers=headers, json={"IpAddress": args.add, "Id": 0, "Description": args.description or ""})
         handle_response(resp)
     elif args.delete:
-        resp = requests.post(api_url(config, "Blocklist/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "Blocklist/Pbx.BulkIpsDelete"), headers=headers, json={"Ids": args.delete})
         handle_response(resp)
     else:
         params = build_list_params(args)
@@ -412,7 +434,18 @@ def cmd_activity_log(args):
         resp = requests.post(api_url(config, "ActivityLog/Pbx.PurgeLogs"), headers=headers)
     else:
         params = build_list_params(args)
-        resp = requests.get(api_url(config, "ActivityLog/Pbx.GetLogs"), headers=headers, params=params)
+        params.pop("$orderby", None)
+        from datetime import datetime, timedelta, timezone
+        now = datetime.now(timezone.utc)
+        default_start = (now - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        default_end = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        start = args.start or default_start
+        end = args.end or default_end
+        ext = args.extension or ""
+        call = args.call_id or ""
+        severity = args.severity or ""
+        path = f"ActivityLog/Pbx.GetLogs(startDate={start},endDate={end},extension='{ext}',call='{call}',severity='{severity}')"
+        resp = requests.get(api_url(config, path), headers=headers, params=params)
     handle_response(resp)
 
 # ── Tier 5 – System Control ───────────────────────────────────────────────────
@@ -423,9 +456,10 @@ def cmd_backups(args):
     if args.create:
         resp = requests.post(api_url(config, "Backups"), headers=headers)
     elif args.restore:
-        resp = requests.post(api_url(config, f"Backups({args.restore})/Pbx.Restore"), headers=headers)
+        resp = requests.post(api_url(config, f"Backups('{args.restore}')/Pbx.Restore"), headers=headers)
     else:
         params = build_list_params(args)
+        params["$orderby"] = "CreationTime desc"
         resp = requests.get(api_url(config, "Backups"), headers=headers, params=params)
     handle_response(resp)
 
@@ -435,21 +469,21 @@ def cmd_restart(args):
         sys.exit(1)
     config = load_config()
     headers = get_headers(config)
-    resp = requests.post(api_url(config, "Pbx.Restart"), headers=headers)
+    resp = requests.post(api_url(config, "Services/Pbx.Restart"), headers=headers)
     handle_response(resp)
 
 def cmd_emergency_numbers(args):
     config = load_config()
     headers = get_headers(config)
     if args.add:
-        resp = requests.post(api_url(config, "EmergencyNumbers"), headers=headers, json={"Number": args.add, "Id": 0, "Name": args.name or ""})
+        resp = requests.post(api_url(config, "EmergencyGeoLocations"), headers=headers, json={"FriendlyName": args.name or args.add, "Id": 0})
         handle_response(resp)
     elif args.delete:
-        resp = requests.post(api_url(config, "EmergencyNumbers/Pbx.BulkDelete"), headers=headers, json={"Ids": args.delete})
+        resp = requests.post(api_url(config, "EmergencyGeoLocations/Pbx.BulkNumbersDelete"), headers=headers, json={"Ids": args.delete})
         handle_response(resp)
     else:
         params = build_list_params(args)
-        resp = requests.get(api_url(config, "EmergencyNumbers"), headers=headers, params=params)
+        resp = requests.get(api_url(config, "EmergencyGeoLocations"), headers=headers, params=params)
         handle_response(resp)
 
 # ── CLI Entry Point ────────────────────────────────────────────────────────────
@@ -552,6 +586,8 @@ def main():
     p_calls.set_defaults(func=cmd_active_calls)
 
     p_history = subparsers.add_parser("call-history", help="View call history")
+    p_history.add_argument("--start", type=str, help="Start date (ISO 8601, e.g. 2026-01-01T00:00:00Z)")
+    p_history.add_argument("--end", type=str, help="End date (ISO 8601)")
     add_list_args(p_history)
     p_history.set_defaults(func=cmd_call_history)
 
@@ -625,13 +661,18 @@ def main():
 
     p_actlog = subparsers.add_parser("activity-log", help="View or purge activity log")
     p_actlog.add_argument("--purge", action="store_true", help="Purge all logs")
+    p_actlog.add_argument("--start", type=str, help="Start date (ISO 8601, e.g. 2026-01-01T00:00:00Z)")
+    p_actlog.add_argument("--end", type=str, help="End date (ISO 8601)")
+    p_actlog.add_argument("--extension", type=str, help="Filter by extension")
+    p_actlog.add_argument("--call-id", type=str, help="Filter by call ID")
+    p_actlog.add_argument("--severity", type=str, help="Filter by severity")
     add_list_args(p_actlog)
     p_actlog.set_defaults(func=cmd_activity_log)
 
     # backups, restart, emergency-numbers (Tier 5)
     p_backups = subparsers.add_parser("backups", help="Manage backups")
     p_backups.add_argument("--create", action="store_true", help="Create a new backup")
-    p_backups.add_argument("--restore", type=int, help="Backup ID to restore")
+    p_backups.add_argument("--restore", type=str, help="Backup filename to restore")
     add_list_args(p_backups)
     p_backups.set_defaults(func=cmd_backups)
 
