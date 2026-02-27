@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 .claude/
+3cx.db3
+recordings/
+web/node_modules/
+plans/
