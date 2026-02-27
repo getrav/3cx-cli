@@ -283,7 +283,7 @@ Use `--reason` with these values:
 | Category | Commands |
 |----------|----------|
 | **Setup** | `config`, `token`, `version` |
-| **Users & Departments** | `users`, `create-user`, `delete-users`, `assign-role`, `departments`, `create-department`, `delete-department` |
+| **Users & Departments** | `users`, `create-user`, `delete-users`, `assign-role`, `departments`, `create-department`, `update-department`, `delete-department` |
 | **Communication** | `live-chat`, `create-live-chat`, `parking` |
 | **System Operations** | `system-status`, `active-calls`, `call-history`, `recordings` |
 | **Routing & Call Flow** | `inbound-rules`, `outbound-rules`, `ivrs`, `queues`, `ring-groups` |
@@ -309,6 +309,10 @@ Use `--reason` with these values:
 ./3cx-config departments --name "Sales"
 ./3cx-config create-department --name "Support" --prompt-set "uuid" --language EN
 ./3cx-config delete-department --id 123
+
+# Update department transcription
+./3cx-config update-department --id 29 --transcription Both
+./3cx-config update-department --id 30 --transcription Nothing
 
 # Users
 ./3cx-config users
@@ -487,6 +491,7 @@ Some CLI command names differ from their underlying 3CX API endpoint names. This
 | `emergency-numbers` | `EmergencyGeoLocations` | E911 / emergency routing |
 | `call-history` | `ReportCallLogData/Pbx.GetCallLogData(...)` | OData function with date params |
 | `activity-log` | `ActivityLog/Pbx.GetLogs(...)` | OData function with filter params |
+| `departments` | `Groups` | Department/group management |
 
 #### User Roles
 

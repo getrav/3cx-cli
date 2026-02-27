@@ -131,6 +131,18 @@ def cmd_delete_department(args):
     resp = requests.post(api_url(config, "Groups/Pbx.DeleteCompanyById"), headers=headers, json={"Id": args.id})
     handle_response(resp)
 
+def cmd_update_department(args):
+    config = load_config()
+    headers = get_headers(config)
+    data = {}
+    if args.transcription is not None:
+        data["TranscriptionMode"] = args.transcription
+    if not data:
+        print("Error: No update flags provided. Use --transcription.", file=sys.stderr)
+        sys.exit(1)
+    resp = requests.patch(api_url(config, f"Groups({args.id})"), headers=headers, json=data)
+    handle_response(resp)
+
 def cmd_users(args):
     config = load_config()
     headers = get_headers(config)
@@ -531,6 +543,11 @@ def main():
     p_del_dept = subparsers.add_parser("delete-department", help="Delete department")
     p_del_dept.add_argument("--id", type=int, required=True)
     p_del_dept.set_defaults(func=cmd_delete_department)
+
+    p_update_dept = subparsers.add_parser("update-department", help="Update department settings")
+    p_update_dept.add_argument("--id", type=int, required=True, help="Department ID")
+    p_update_dept.add_argument("--transcription", choices=["Both", "Nothing", "Inherit"], help="Transcription mode")
+    p_update_dept.set_defaults(func=cmd_update_department)
 
     # users, create-user, delete-users, assign-role
     p_users = subparsers.add_parser("users", help="List users")
