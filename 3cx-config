@@ -335,11 +335,12 @@ def cmd_outbound_rules(args):
 def cmd_ivrs(args):
     config = load_config()
     headers = get_headers(config)
+    # IVRs in 3CX v20+ are stored as Receptionists, not CallFlowApps
     if args.id:
-        resp = requests.get(api_url(config, f"CallFlowApps({args.id})"), headers=headers)
+        resp = requests.get(api_url(config, f"Receptionists({args.id})"), headers=headers)
     else:
         params = build_list_params(args)
-        resp = requests.get(api_url(config, "CallFlowApps"), headers=headers, params=params)
+        resp = requests.get(api_url(config, "Receptionists"), headers=headers, params=params)
     handle_response(resp)
 
 def cmd_queues(args):
