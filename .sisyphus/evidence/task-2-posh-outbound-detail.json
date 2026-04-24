@@ -1,0 +1,55 @@
+{
+  "@odata.context": "https://pbx.rs74.net/xapi/v1/$metadata#OutboundRules/$entity",
+  "Name": "PoshTex-out",
+  "Prefix": "0-9",
+  "Priority": 0,
+  "NumberLengthRanges": "",
+  "GroupIds": [
+    34,
+    30
+  ],
+  "GroupNames": [
+    "Posh",
+    "Syosset Office"
+  ],
+  "Id": 2,
+  "Routes": [
+    {
+      "Append": "",
+      "CallerID": "2126297241",
+      "Prepend": "08033737*",
+      "StripDigits": 0,
+      "TrunkId": 56,
+      "TrunkName": "Flowroute-posh"
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    }
+  ],
+  "DNRanges": []
+}

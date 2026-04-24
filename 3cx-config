@@ -40,7 +40,9 @@ def get_headers(config):
     else:
         token_data = get_token(config["fqdn"], config["client_id"], config["client_secret"])
         config["access_token"] = token_data["access_token"]
-        config["token_expiry"] = now + token_data.get("expires_in", 3600)
+        # 3CX returns expires_in=60 (60-second token lifetime)
+        # Cache for 45s to ensure we never use a stale token
+        config["token_expiry"] = now + min(token_data.get("expires_in", 60), 45)
         save_config(config)
         token = config["access_token"]
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}

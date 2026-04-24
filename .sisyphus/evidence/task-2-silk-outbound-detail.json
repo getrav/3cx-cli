@@ -1,0 +1,57 @@
+{
+  "@odata.context": "https://pbx.rs74.net/xapi/v1/$metadata#OutboundRules/$entity",
+  "Name": "SilkCrafts-out",
+  "Prefix": "0-9",
+  "Priority": 1,
+  "NumberLengthRanges": "",
+  "GroupIds": [
+    31,
+    32,
+    33
+  ],
+  "GroupNames": [
+    "Syosset Warehouse",
+    "Operator group",
+    "Silk Crafts"
+  ],
+  "Id": 1,
+  "Routes": [
+    {
+      "Append": "",
+      "CallerID": "2128689280",
+      "Prepend": "19679208*",
+      "StripDigits": 0,
+      "TrunkId": 80,
+      "TrunkName": "Flowroute-SilkCrafts"
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    },
+    {
+      "Append": "",
+      "CallerID": "",
+      "Prepend": "",
+      "StripDigits": 0,
+      "TrunkId": -1
+    }
+  ],
+  "DNRanges": []
+}

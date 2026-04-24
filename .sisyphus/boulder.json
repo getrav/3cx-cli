@@ -1,0 +1,41 @@
+{
+  "active_plan": "/home/rc/projects/3cx/.sisyphus/plans/3cx-routing-fix.md",
+  "started_at": "2026-04-24T19:56:53.729Z",
+  "session_ids": [
+    "ses_23eeef1f2ffeg4pQHAuicCMcwm"
+  ],
+  "session_origins": {
+    "ses_23eeef1f2ffeg4pQHAuicCMcwm": "direct"
+  },
+  "plan_name": "3cx-routing-fix",
+  "agent": "atlas",
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "System Backup and Baseline Verification",
+      "session_id": "ses_23eede7c1ffezHb0ufRg0di1Vn",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-24T20:17:54.761Z"
+    },
+    "todo:5": {
+      "task_key": "todo:5",
+      "task_label": "5",
+      "task_title": "Restore PoshTex IVR Menus (810, 814) via Console",
+      "session_id": "ses_23ebbc658ffe4arKDmFzB0VuMw",
+      "agent": "Sisyphus-Junior",
+      "category": "deep",
+      "updated_at": "2026-04-24T20:57:49.797Z"
+    },
+    "final-wave:f1": {
+      "task_key": "final-wave:f1",
+      "task_label": "F1",
+      "task_title": "**Plan Compliance Audit** — `oracle` + `load_skills: [\"3cx\"]`",
+      "session_id": "ses_23eb54e08ffefwEUg9cVpeg4Yl",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-24T21:04:17.073Z"
+    }
+  }
+}

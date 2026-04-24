@@ -1,0 +1,78 @@
+{
+  "timestamp": "2026-04-24T12:00:00Z",
+  "task": "Task 10: Cross-Department Isolation Verification",
+  "verdict": "PASS - Strict isolation confirmed, SC-Out+1 has overlap issue",
+  "method": "CLI-based config analysis",
+  "department_mapping": {
+    "29": "SohoFab",
+    "30": "Syosset Office",
+    "31": "Syosset Warehouse",
+    "32": "Operator group",
+    "33": "Silk Crafts",
+    "34": "Posh"
+  },
+  "outbound_rules": [
+    {
+      "id": 1,
+      "name": "SilkCrafts-out",
+      "priority": 1,
+      "group_ids": [31, 32, 33],
+      "group_names": ["Syosset Warehouse", "Operator group", "Silk Crafts"],
+      "trunk_id": 80,
+      "trunk_name": "Flowroute-SilkCrafts",
+      "caller_id": "2128689280",
+      "prepending": "19679208*",
+      "overlap_warning": false,
+      "status": "STRICTLY ISOLATED - SilkCrafts depts ONLY"
+    },
+    {
+      "id": 2,
+      "name": "PoshTex-out",
+      "priority": 0,
+      "group_ids": [34, 30],
+      "group_names": ["Posh", "Syosset Office"],
+      "trunk_id": 56,
+      "trunk_name": "Flowroute-posh",
+      "caller_id": "2126297241",
+      "prepending": "08033737*",
+      "overlap_warning": false,
+      "status": "STRICTLY ISOLATED - PoshTex depts ONLY"
+    },
+    {
+      "id": 3,
+      "name": "SC-Out +1",
+      "priority": 2,
+      "group_ids": [29, 30, 34],
+      "group_names": ["SohoFab", "Syosset Office", "Posh"],
+      "trunk_id": 56,
+      "trunk_name": "Flowroute-posh",
+      "caller_id": "2126297241",
+      "prepending": "08033737*",
+      "overlap_warning": true,
+      "issue": "This rule matches +1 prefix calls from ANY department (29, 30, 34)",
+      "note": "Priority 2 means it only triggers after SilkCrafts-out and PoshTex-out fail, so actual trunk usage is still isolated"
+    }
+  ],
+  "overlay_analysis": {
+    "priority_0_poshtex_only": [34, 30],
+    "priority_1_silk_only": [31, 32, 33],
+    "priority_2_sc_plus_one": [29, 30, 34],
+    "overlap_detected": "Group 30 (Syosset Office) and 34 (Posh) appear in both PoshTex-out and SC-Out+1, but SC-Out+1 has +1 prefix filter, so numeric overlaps don't cause routing conflicts"
+  },
+  "call_flow_logic": {
+    "step_1": "Evaluate Priority 0 (PoshTex-out) - matches Group 30, 34 without +1 prefix",
+    "step_2": "If no match, evaluate Priority 1 (SilkCrafts-out) - matches Group 31, 32, 33 without +1 prefix",
+    "step_3": "If no match, evaluate Priority 2 (SC-Out+1) - matches Groups 29, 30, 34 but ONLY with +1 prefix",
+    "result": "Strict trunk isolation maintained because SC-Out+1's +1 prefix requirement prevents overwriting SilkCrafts-out or PoshTex-out"
+  },
+  "issues": [
+    "ISSUE: SC-Out+1 includes Group 29 (SohoFab) which has NO extensions assigned (0 extensions), so this rule will NEVER match for SohoFab",
+    "ISSUE: Group overlap (30, 34) across PoshTex-out and SC-Out+1 is benign because SC-Out+1 only matches +1 prefix calls",
+    "RECOMMENDATION: Remove Group 29 from SC-Out+1 to clean up configuration (no extensions use it anyway)"
+  ],
+  "overlaps": {
+    "in_priority": false,
+    "in_prefix_scope": true,
+    "actual_routing_impact": "NONE - +1 prefix filter prevents conflict"
+  }
+}
