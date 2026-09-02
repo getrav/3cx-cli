@@ -7,6 +7,10 @@ __pycache__/
 recordings/
 web/node_modules/
 plans/
+# Generated tool caches / local artifacts
+.pytest_cache/
+graphify-out/
+metadata.xml
 
 # Beads / Dolt files (added by bd init)
 .dolt/
