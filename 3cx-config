@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """3CX Configuration REST API CLI Tool
 
 Compatibility facade: the command and parser implementations live in the

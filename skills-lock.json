@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "cli-anything": {
+      "source": "hkuds/cli-anything",
+      "sourceType": "github",
+      "skillPath": "codex-skill/SKILL.md",
+      "computedHash": "e2dc724566310650d07bbb793d3408b7b11f052523b7ed24309c5ab0a51556c6"
+    }
+  }
+}
